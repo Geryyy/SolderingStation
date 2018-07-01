@@ -432,6 +432,7 @@ OBJECTS += ./mbed-os/targets/TARGET_STM/us_ticker_32b.o
 INCLUDE_PATHS += -I../
 INCLUDE_PATHS += -I../.
 INCLUDE_PATHS += -I.././.
+INCLUDE_PATHS += -I.././mbed-os\features\unsupported\dsp\cmsis_dsp\FilteringFunctions
 INCLUDE_PATHS += -I.././mbed-os
 INCLUDE_PATHS += -I.././mbed-os/cmsis
 INCLUDE_PATHS += -I.././mbed-os/cmsis/TARGET_CORTEX_M
