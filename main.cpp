@@ -50,7 +50,7 @@ void smps_control_task(){
     
     float e;
     static float Uref = 3.3;
-    static float k = (6.8 + 1.0) / 1.0; // voltage divider
+    static float k = (10 + 1.0) / 1.0; // voltage divider
 
     while(true){
         timing = 1;
