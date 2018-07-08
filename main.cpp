@@ -1,5 +1,7 @@
 #include "mbed.h"
 #include "arm_math.h"
+#include "adc.h"
+#include "tim.h"
 
 void smps_control_task();
 void temperature_control_task();
@@ -43,7 +45,7 @@ void smps_control_task(){
     // while(true){
         timing = 1;
 
-        u_ist = k*Uref*u_smps;
+        // u_ist = k*Uref*u_smps.read();
         e = u_soll - u_ist;
         x[2] = x[1];
         x[1] = x[0];
@@ -76,7 +78,14 @@ int main(){
     smps.period_us(10); // 100kHz
     smps.write(0.5f); // duty cycle
 
-    fastcontrol.attach(&smps_control_task,0.00005);
+    MX_ADC1_Init();
+    MX_TIM5_Init();
+
+    HAL_TIM_Base_Start(&htim5);
+    HAL_TIM_OC_Start_IT(&htim5, TIM_CHANNEL_1); 
+
+
+    // fastcontrol.attach(&smps_control_task,0.00005);
 
     //  smpsthread.start(smps_control_task);
     // solderingthread.start(temperature_control_task);
@@ -100,3 +109,11 @@ void temperature_control_task(){
         wait_ms(1);
     }
 }
+
+
+void _Error_Handler(char* file, int line){
+    fprintf(stderr, "Error in %s line %d\n",file, line);
+    while(true);
+}
+
+

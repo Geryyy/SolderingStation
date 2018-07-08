@@ -46,8 +46,8 @@
             "windows": {
                 "preLaunchTask": "make.exe",
                 "MIMode": "gdb",
-                "MIDebuggerPath": "C:\\Program Files (x86)\\GNU Tools ARM Embedded\\4.9 2015q3\\bin\\arm-none-eabi-gdb.exe",
-                "debugServerPath": "pyocd-gdbserver.exe",
+                "MIDebuggerPath": "C:\\Program Files (x86)\\GNU Tools ARM Embedded\\7 2017-q4-major\\bin\\arm-none-eabi-gdb.exe",
+                // "debugServerPath": "pyocd-gdbserver.exe",
                 "setupCommands": [
                     { "text": "-environment-cd ${workspaceRoot}\\BUILD" },
                     { "text": "-target-select remote localhost:3333", "description": "connect to target", "ignoreFailures": false },
