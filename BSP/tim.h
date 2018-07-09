@@ -51,7 +51,7 @@
 
 /* USER CODE END Includes */
 
-extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim;
 
 /* USER CODE BEGIN Private defines */
 
@@ -59,7 +59,7 @@ extern TIM_HandleTypeDef htim4;
 
 extern void _Error_Handler(char *, int);
 
-void MX_TIM4_Init(void);
+void TIM_Config(void);
 
 /* USER CODE BEGIN Prototypes */
 

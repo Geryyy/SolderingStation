@@ -71,22 +71,42 @@ void smps_control_task(){
 
 /*** main ***/
 volatile uint32_t isrcnt;
+volatile uint16_t u_in;
 
 int main(){
     printf("Soldering Station V1\n(c) Gerald Ebmer 2018\n\n");
+    // printf("Sysclk frequency: %ld\n\n",SYSCLK_Frequency);
 
     // Init SMPS PWM
     smps.period_us(10); // 100kHz
     smps.write(0.5f); // duty cycle
 
+      /*##-1- TIM Peripheral Configuration ######################################*/
+    TIM_Config();
+
+    /*##-2- Configure the ADC peripheral ######################################*/
     MX_ADC1_Init();
-    MX_TIM4_Init();
 
-    HAL_TIM_Base_Start_IT(&htim4);
+    /*##-4- Start the conversion process and enable interrupt ##################*/
+    if (HAL_ADC_Start_IT(&hadc1) != HAL_OK)
+    {
+        /* Start Conversation Error */
+        _Error_Handler(__FILE__,__LINE__);
+    }
 
-    HAL_ADC_Start_IT(&hadc1);
+    /*##-3- TIM counter enable ################################################*/
+    if (HAL_TIM_Base_Start(&htim) != HAL_OK)
+    {
+        /* Counter Enable Error */
+        _Error_Handler(__FILE__,__LINE__);
+    }
+
+
+    // HAL_TIM_Base_Start_IT(&htim4);
+
+    // HAL_ADC_Start_IT(&hadc1);
     
-    // HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_4); 
+    // HAL_TIM_OC_Start_IT(&htim, TIM_CHANNEL_4); 
 
 
     // fastcontrol.attach(&smps_control_task,0.00005);
@@ -100,14 +120,19 @@ int main(){
         wait(1);
         led = !led;
         printf("Uin: %f\nUsoll: %f\ndutycycle: %f\n\n",u_ist, u_soll, dutycycle);
-        printf("isrcnt: %ld\n\n",isrcnt);
+        printf("isrcnt: %ld\n",isrcnt);
+        printf("u_in: %d\n\n",u_in);
     }
 }
 
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
-    isrcnt++;
+    if(hadc == &hadc1){
+        isrcnt++;
+        u_in = HAL_ADC_GetValue(&hadc1);
+    }
     // HAL_TIM_Base_Stop_IT(&htim4);
+    // HAL_ADC_Stop_IT(&hadc1);
     // HAL_ADC_Stop_IT(&hadc1);
 
 }
