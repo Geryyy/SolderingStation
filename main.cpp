@@ -50,12 +50,9 @@ int main(){
 
 
 DigitalOut TimingPin(PC_8);
-static int n = 0;
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
     if(hadc == &hadc1){
-        
-        n = (n+1)%5;
         TimingPin = 1;
         smps_control_task();
         TimingPin = 0;
@@ -67,11 +64,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim){
 
 void smps_control_task(){
     static float u_pwm = 0.0;
-    const float u_soll = 5.0;
+    const float u_soll = 10;
     const float u_ist = k*Uref*( (float)HAL_ADC_GetValue(&hadc1) / 4095.0);
 
     u_pwm = smps_controller(u_soll, u_ist);
-    u_pwm = limiter(u_pwm);
+    // u_pwm = limiter(u_pwm);
     updatePWM(u_pwm);  
     
     smps_u_ist = u_ist;

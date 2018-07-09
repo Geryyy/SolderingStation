@@ -29,8 +29,8 @@ float smps_controller(float u_soll, float u_ist){
 
 float limiter(float x){
     float y = x;
-    if(x>0.99) y = 0.99;
-    else if(x<0.01) y = 0.01;
+    if(x>0.95) y = 0.95;
+    else if(x<0.05) y = 0.05;
     return y;
 }
 
