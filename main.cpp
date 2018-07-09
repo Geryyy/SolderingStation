@@ -10,8 +10,8 @@ void temperature_control_task();
 Thread solderingthread;
 
 DigitalOut led(PA_5);
-AnalogIn u_smps(PA_0);
-PwmOut pwm_smps(PA_8);
+
+
 
 
 
@@ -24,10 +24,10 @@ int main(){
     printf("Soldering Station V1\n(c) Gerald Ebmer 2018\n\n");
 
     // Init SMPS PWM
-    pwm_smps.period_us(10); // 100kHz
-    pwm_smps.write(0.1f); // duty cycle
+    
 
     TIM_Config();
+    PWM_Config();
     MX_ADC1_Init();
 
     if (HAL_ADC_Start_IT(&hadc1) != HAL_OK)    {
@@ -58,7 +58,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
         n = (n+1)%5;
         TimingPin = 1;
         smps_control_task();
-        pwm_smps.write(n*0.1f);
         TimingPin = 0;
     }
 }
@@ -73,7 +72,7 @@ void smps_control_task(){
 
     u_pwm = smps_controller(u_soll, u_ist);
     u_pwm = limiter(u_pwm);
-    // pwm_smps.write(u_pwm);    
+    updatePWM(u_pwm);  
     
     smps_u_ist = u_ist;
     smps_u_soll = u_soll;

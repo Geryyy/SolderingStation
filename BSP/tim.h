@@ -61,6 +61,9 @@ extern void _Error_Handler(char *, int);
 
 void TIM_Config(void);
 
+void PWM_Config(void);
+
+void updatePWM(float d);
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */

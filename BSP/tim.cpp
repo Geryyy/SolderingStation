@@ -111,3 +111,86 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *htim)
   __HAL_RCC_TIM2_FORCE_RESET();
   __HAL_RCC_TIM2_RELEASE_RESET();
 }
+
+
+
+TIM_HandleTypeDef    TimHandle;
+TIM_OC_InitTypeDef sConfig;
+
+static uint16_t pwm_period = 420;
+
+void PWM_Config(){
+  TimHandle.Instance = TIM3;
+
+  TimHandle.Init.Prescaler         = 1; // 84MHz
+  TimHandle.Init.Period            = pwm_period; // 100 kHz
+  TimHandle.Init.ClockDivision     = 0;
+  TimHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
+  TimHandle.Init.RepetitionCounter = 0;
+  if (HAL_TIM_PWM_Init(&TimHandle) != HAL_OK)
+  {
+  /* Initialization Error */
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  /*##-2- Configure the PWM channels #########################################*/
+  /* Common configuration for all channels */
+  sConfig.OCMode       = TIM_OCMODE_PWM1;
+  sConfig.OCPolarity   = TIM_OCPOLARITY_HIGH;
+  sConfig.OCFastMode   = TIM_OCFAST_DISABLE;
+  sConfig.OCNPolarity  = TIM_OCNPOLARITY_HIGH;
+  sConfig.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+
+  sConfig.OCIdleState  = TIM_OCIDLESTATE_RESET;
+
+  /* Set the pulse value for channel 1 */
+  sConfig.Pulse = pwm_period/2;
+  if (HAL_TIM_PWM_ConfigChannel(&TimHandle, &sConfig, TIM_CHANNEL_1) != HAL_OK)
+  {
+  /* Configuration Error */
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  if (HAL_TIM_PWM_Start(&TimHandle, TIM_CHANNEL_1) != HAL_OK)
+  {
+  /* PWM Generation Error */
+    _Error_Handler(__FILE__, __LINE__);
+  }
+}
+
+/**
+  * @brief TIM MSP Initialization
+  *        This function configures the hardware resources used in this example:
+  *           - Peripheral's clock enable
+  *           - Peripheral's GPIO Configuration
+  * @param htim: TIM handle pointer
+  * @retval None
+  */
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
+{
+  GPIO_InitTypeDef   GPIO_InitStruct;
+  /*##-1- Enable peripherals and GPIO Clocks #################################*/
+  /* TIMx Peripheral clock enable */
+  __HAL_RCC_TIM3_CLK_ENABLE();
+
+  /* Enable all GPIO Channels Clock requested */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+
+/* TIM3 PWM on PC6 */
+  /* Common configuration for all channels */
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+
+  GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+  GPIO_InitStruct.Pin = GPIO_PIN_6;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+}
+
+void updatePWM(float d){
+  uint16_t pulse = 0;
+  if(d>=1.0) pulse = pwm_period;
+  else if(d<=0.0) pulse = 0;
+  else pulse = (uint16_t)((float)pwm_period * d);
+  __HAL_TIM_SET_COMPARE(&TimHandle, TIM_CHANNEL_1, pulse);
+}

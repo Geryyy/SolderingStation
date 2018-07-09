@@ -4,6 +4,9 @@
     "C_Cpp.intelliSenseEngine": "Tag Parser",
     "files.associations": {
         "hal_tick.h": "c",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp"
     }
 }
