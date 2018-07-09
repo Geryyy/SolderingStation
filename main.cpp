@@ -70,6 +70,7 @@ void smps_control_task(){
 
 
 /*** main ***/
+volatile uint32_t isrcnt;
 
 int main(){
     printf("Soldering Station V1\n(c) Gerald Ebmer 2018\n\n");
@@ -79,10 +80,13 @@ int main(){
     smps.write(0.5f); // duty cycle
 
     MX_ADC1_Init();
-    MX_TIM5_Init();
+    MX_TIM4_Init();
 
-    HAL_TIM_Base_Start(&htim5);
-    HAL_TIM_OC_Start_IT(&htim5, TIM_CHANNEL_1); 
+    HAL_TIM_Base_Start_IT(&htim4);
+
+    HAL_ADC_Start_IT(&hadc1);
+    
+    // HAL_TIM_OC_Start_IT(&htim4, TIM_CHANNEL_4); 
 
 
     // fastcontrol.attach(&smps_control_task,0.00005);
@@ -96,10 +100,22 @@ int main(){
         wait(1);
         led = !led;
         printf("Uin: %f\nUsoll: %f\ndutycycle: %f\n\n",u_ist, u_soll, dutycycle);
+        printf("isrcnt: %ld\n\n",isrcnt);
     }
 }
 
 
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
+    isrcnt++;
+    // HAL_TIM_Base_Stop_IT(&htim4);
+    // HAL_ADC_Stop_IT(&hadc1);
+
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim){
+    // printf("Hello");
+    // HAL_ADC_Start_IT(&hadc1);
+}
 
 
 void temperature_control_task(){

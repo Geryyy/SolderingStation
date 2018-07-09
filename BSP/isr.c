@@ -41,7 +41,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
-extern TIM_HandleTypeDef htim5;
+extern TIM_HandleTypeDef htim4;
 
 
 
@@ -62,22 +62,22 @@ void ADC_IRQHandler(void)
   /* USER CODE END ADC_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   /* USER CODE BEGIN ADC_IRQn 1 */
-  printf("ADC ISR\n");
+
   /* USER CODE END ADC_IRQn 1 */
 }
 
 /**
-* @brief This function handles TIM5 global interrupt.
+* @brief This function handles TIM4 global interrupt.
 */
-void TIM5_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM5_IRQn 0 */
+  /* USER CODE BEGIN TIM4_IRQn 0 */
 
-  /* USER CODE END TIM5_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim5);
-  /* USER CODE BEGIN TIM5_IRQn 1 */
-  printf("TIMER ISR\n");
-  /* USER CODE END TIM5_IRQn 1 */
+  /* USER CODE END TIM4_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim4);
+  /* USER CODE BEGIN TIM4_IRQn 1 */
+  
+  /* USER CODE END TIM4_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

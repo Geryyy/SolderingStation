@@ -44,36 +44,36 @@
 
 /* USER CODE END 0 */
 
-TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim4;
 
-/* TIM5 init function */
-void MX_TIM5_Init(void)
+/* TIM4 init function */
+void MX_TIM4_Init(void)
 {
   TIM_MasterConfigTypeDef sMasterConfig;
   TIM_OC_InitTypeDef sConfigOC;
 
-  htim5.Instance = TIM5;
-  htim5.Init.Prescaler = 84;
-  htim5.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim5.Init.Period = 50;
-  htim5.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  if (HAL_TIM_OC_Init(&htim5) != HAL_OK)
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 84000;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 500; // 50;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_OC_Init(&htim4) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_OC4REF;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim5, &sMasterConfig) != HAL_OK)
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
   sConfigOC.OCMode = TIM_OCMODE_TIMING;
-  sConfigOC.Pulse = 25;
+  sConfigOC.Pulse = 250;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_OC_ConfigChannel(&htim5, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_OC_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
@@ -83,39 +83,39 @@ void MX_TIM5_Init(void)
 void HAL_TIM_OC_MspInit(TIM_HandleTypeDef* tim_ocHandle)
 {
 
-  if(tim_ocHandle->Instance==TIM5)
+  if(tim_ocHandle->Instance==TIM4)
   {
-  /* USER CODE BEGIN TIM5_MspInit 0 */
+  /* USER CODE BEGIN TIM4_MspInit 0 */
 
-  /* USER CODE END TIM5_MspInit 0 */
-    /* TIM5 clock enable */
-    __HAL_RCC_TIM5_CLK_ENABLE();
+  /* USER CODE END TIM4_MspInit 0 */
+    /* TIM4 clock enable */
+    __HAL_RCC_TIM4_CLK_ENABLE();
 
-    /* TIM5 interrupt Init */
-    HAL_NVIC_SetPriority(TIM5_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(TIM5_IRQn);
-  /* USER CODE BEGIN TIM5_MspInit 1 */
+    /* TIM4 interrupt Init */
+    HAL_NVIC_SetPriority(TIM4_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM4_IRQn);
+  /* USER CODE BEGIN TIM4_MspInit 1 */
 
-  /* USER CODE END TIM5_MspInit 1 */
+  /* USER CODE END TIM4_MspInit 1 */
   }
 }
 
 void HAL_TIM_OC_MspDeInit(TIM_HandleTypeDef* tim_ocHandle)
 {
 
-  if(tim_ocHandle->Instance==TIM5)
+  if(tim_ocHandle->Instance==TIM4)
   {
-  /* USER CODE BEGIN TIM5_MspDeInit 0 */
+  /* USER CODE BEGIN TIM4_MspDeInit 0 */
 
-  /* USER CODE END TIM5_MspDeInit 0 */
+  /* USER CODE END TIM4_MspDeInit 0 */
     /* Peripheral clock disable */
-    __HAL_RCC_TIM5_CLK_DISABLE();
+    __HAL_RCC_TIM4_CLK_DISABLE();
 
-    /* TIM5 interrupt Deinit */
-    HAL_NVIC_DisableIRQ(TIM5_IRQn);
-  /* USER CODE BEGIN TIM5_MspDeInit 1 */
+    /* TIM4 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(TIM4_IRQn);
+  /* USER CODE BEGIN TIM4_MspDeInit 1 */
 
-  /* USER CODE END TIM5_MspDeInit 1 */
+  /* USER CODE END TIM4_MspDeInit 1 */
   }
 } 
 
