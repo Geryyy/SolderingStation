@@ -3,6 +3,7 @@
     "C_Cpp.addWorkspaceRootToIncludePath": false,
     "C_Cpp.intelliSenseEngine": "Tag Parser",
     "files.associations": {
-        "hal_tick.h": "c"
+        "hal_tick.h": "c",
+        "ostream": "cpp"
     }
 }

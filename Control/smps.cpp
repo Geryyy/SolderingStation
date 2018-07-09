@@ -5,10 +5,10 @@ const float k = (10.0 + 1.0) / 1.0; // voltage divider
 float smps_controller(float u_soll, float u_ist){
     // const float Ta = 50e-6; // 50 us
     const float b0 = 0.0f;
-    const float b1 = 0.2724050f;
-    const float b2 = 0.1613566f;
-    const float a1 = -1.3304278f;
-    const float a2 = 0.7641896f;
+    const float b1 = 0.097389247037219f;
+    const float b2 = 0.010025915519432f;
+    const float a1 = -1.805163716388738f;
+    const float a2 = 0.892527047906525f;
     static float x[3] = {0};
     static float y[3] = {0};
     const float e = u_soll - u_ist;
@@ -28,10 +28,9 @@ float smps_controller(float u_soll, float u_ist){
 }
 
 float limiter(float x){
-    float y;
-    if(x>1.0) y = 1.0;
-    else if(x<0.0) y = 0.0;
-    else y = x;
+    float y = x;
+    if(x>0.99) y = 0.99;
+    else if(x<0.01) y = 0.01;
     return y;
 }
 

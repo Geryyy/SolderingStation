@@ -25,7 +25,7 @@ int main(){
 
     // Init SMPS PWM
     pwm_smps.period_us(10); // 100kHz
-    pwm_smps.write(0.5f); // duty cycle
+    pwm_smps.write(0.1f); // duty cycle
 
     TIM_Config();
     MX_ADC1_Init();
@@ -50,10 +50,15 @@ int main(){
 
 
 DigitalOut TimingPin(PC_8);
+static int n = 0;
+
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
     if(hadc == &hadc1){
+        
+        n = (n+1)%5;
         TimingPin = 1;
         smps_control_task();
+        pwm_smps.write(n*0.1f);
         TimingPin = 0;
     }
 }
@@ -68,7 +73,7 @@ void smps_control_task(){
 
     u_pwm = smps_controller(u_soll, u_ist);
     u_pwm = limiter(u_pwm);
-    pwm_smps.write(u_pwm);    
+    // pwm_smps.write(u_pwm);    
     
     smps_u_ist = u_ist;
     smps_u_soll = u_soll;
