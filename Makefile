@@ -47,6 +47,7 @@ PROJECT := SolderingStation
 # Objects and Paths
 
 OBJECTS += ./main.o
+OBJECTS += ./Control/smps.o
 OBJECTS += ./BSP/adc.o
 OBJECTS += ./BSP/isr.o
 OBJECTS += ./BSP/tim.o
@@ -435,6 +436,7 @@ OBJECTS += ./mbed-os/targets/TARGET_STM/us_ticker_32b.o
 INCLUDE_PATHS += -I../
 INCLUDE_PATHS += -I../.
 INCLUDE_PATHS += -I.././.
+INCLUDE_PATHS += -I.././Control
 INCLUDE_PATHS += -I.././BSP
 INCLUDE_PATHS += -I.././mbed-os\features\unsupported\dsp\cmsis_dsp\FilteringFunctions
 INCLUDE_PATHS += -I.././mbed-os

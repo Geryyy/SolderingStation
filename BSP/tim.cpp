@@ -59,8 +59,8 @@ void TIM_Config(void)
   /* Time Base configuration */
   htim.Instance = TIM2;
 
-  htim.Init.Period            = 1000;
-  htim.Init.Prescaler         = 84000000/1000;
+  htim.Init.Period            = 50;
+  htim.Init.Prescaler         = 84;
   htim.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
   htim.Init.CounterMode       = TIM_COUNTERMODE_UP;
   htim.Init.RepetitionCounter = 0x0;
